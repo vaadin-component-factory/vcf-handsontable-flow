@@ -1,10 +1,3 @@
-var data = [
-  ['', 'Tesla', 'Nissan', 'Toyota', 'Honda'],
-  ['2017', -5, '', 12, 13],
-  ['2018', '', -11, 14, 13],
-  ['2019', '', 15, -12, 'readOnly']
-];
-
 function handsontableRenderer(instance, td, row, col, prop, value, cellProperties) {
   Handsontable.renderers.TextRenderer.apply(this, arguments);
 
@@ -29,28 +22,34 @@ function handsontableRenderer(instance, td, row, col, prop, value, cellPropertie
   }
 }
 
-function createHandsontbale(container) {
-  // maps function to lookup string
-  Handsontable.renderers.registerRenderer('handsontableRenderer', handsontableRenderer);
+// maps function to lookup string
+Handsontable.renderers.registerRenderer('handsontableRenderer', handsontableRenderer);
+
+function createHandsontbale(container, data) {
+  var json = data ? JSON.parse(data) : null;
+  if (container.$handsontable) {
+    return;
+  }
 
   var hot = new Handsontable(container, {
     licenseKey: 'non-commercial-and-evaluation',
-    data: data,
+    data: json,
     rowHeaders: true,
     colHeaders: true,
     mergeCells: true,
+    formulas: true,
+    minSpareRows: 1,
     cells: function (row, col) {
       var cellProperties = {};
       var data = this.instance.getData();
 
-      if (row === 0 || data[row] && data[row][col] === 'readOnly') {
-        cellProperties.readOnly = true; // make cell read-only if it is first row or the text reads 'readOnly'
-      }
-      cellProperties.renderer = "handsontableRenderer"; // uses lookup map
+      cellProperties.renderer = "handsontableRenderer";
 
       return cellProperties;
     }
   });
+
+  container.$handsontable = hot;
 
   hot.toggleCellBooleanMeta = function (key, selection, clickEvent) {
     var hot = this;
@@ -114,4 +113,37 @@ function createHandsontbale(container) {
     }
   });
 
+  hot.setData = function (data) {
+    var json = JSON.parse(data);
+    this.updateSettings({
+      data: json
+    });
+  }
+
+  hot.retrieveData = function (callId) {
+    var data = this.getData();
+    var str = stringify(data);
+    container.$server.responseRetrieveData(callId, str);
+  }
+}
+
+function stringify(obj) {
+  var cache = [];
+  return JSON.stringify(obj, function (key, value) {
+    if (typeof value === 'object' && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        // Duplicate reference found
+        try {
+          // If this value does not reference a parent it can be deduped
+          return JSON.parse(JSON.stringify(value));
+        } catch (error) {
+          // discard key if value cannot be deduped
+          return;
+        }
+      }
+      // Store value in our collection
+      cache.push(value);
+    }
+    return value;
+  });
 }
