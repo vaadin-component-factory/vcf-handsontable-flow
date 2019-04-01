@@ -121,15 +121,37 @@ function createHandsontbale(container, data) {
   }
 
   hot.retrieveData = function (callId) {
+    var data = this.getSourceData();
+    var str = stringify(data);
+    container.$server.receiveJsonArray(callId, str);
+  }
+
+  hot.retrieveDataAsArray = function (callId) {
     var data = this.getData();
     var str = stringify(data);
-    container.$server.responseRetrieveData(callId, str);
+    container.$server.receiveListOfStringArray(callId, str);
+  }
+
+  hot.setCellsMeta = function (cellsMetaString) {
+    var cellsMeta = JSON.parse(cellsMetaString);
+    cellsMeta.forEach(function(cellMeta) {
+      hot.setCellMetaObject(cellMeta.row, cellMeta.col, cellMeta);
+    });
+    this.updateSettings({});
+  }
+
+  hot.retrieveCellsMeta = function(callId) {
+    var cellsMeta = this.getCellsMeta();
+    var str = stringify(cellsMeta);
+    container.$server.receiveCellsMeta(callId, str);
   }
 }
 
 function stringify(obj) {
   var cache = [];
   return JSON.stringify(obj, function (key, value) {
+    if(key == 'instance')
+      return;
     if (typeof value === 'object' && value !== null) {
       if (cache.indexOf(value) !== -1) {
         // Duplicate reference found
