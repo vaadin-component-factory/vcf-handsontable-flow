@@ -6,6 +6,7 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.ClientCallable;
@@ -21,6 +23,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.function.SerializableConsumer;
 
 @JavaScript("frontend://handsontable/dist/handsontable.full.js")
 @StyleSheet("frontend://handsontable/dist/handsontable.full.css")
@@ -74,7 +77,17 @@ public class Handsontable extends Div {
     }
 
     public void setSettings(Settings settings) {
-        throw new UnsupportedOperationException("setSettings isn't been implemented yet!");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            StringWriter writer = new StringWriter();
+            mapper.writeValue(writer, settings);
+            String stringValue = writer.toString();
+            writer.close();
+            getElement().callFunction("$handsontable.setSettings", stringValue);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void retrieveSettings(Consumer<Settings> callback) {
@@ -146,5 +159,14 @@ public class Handsontable extends Div {
         }
 
         return list;
+    }
+
+    void runBeforeClientResponse(SerializableConsumer<UI> command) {
+        getElement().getNode().runWhenAttached(ui -> ui
+                .beforeClientResponse(this, context -> command.accept(ui)));
+    }
+
+    public void setNestedHeaders(JsonArray nestedHeaders) {
+        getElement().callFunction("$handsontable.setNestedHeaders", nestedHeaders.toString());
     }
 }

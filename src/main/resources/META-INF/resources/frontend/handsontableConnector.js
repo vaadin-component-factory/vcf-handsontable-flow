@@ -145,6 +145,16 @@ function createHandsontbale(container, data) {
     var str = stringify(cellsMeta);
     container.$server.receiveCellsMeta(callId, str);
   }
+
+  hot.setSettings = function(settings) {
+    var settingsObject = JSON.parse(settings);
+    this.updateSettings(settingsObject);
+  }
+
+  hot.setNestedHeaders = function(nestedHeadersText) {
+    var nestedHeadersArray = JSON.parse(nestedHeadersText);
+    this.updateSettings({nestedHeaders: nestedHeadersArray});
+  }
 }
 
 function stringify(obj) {

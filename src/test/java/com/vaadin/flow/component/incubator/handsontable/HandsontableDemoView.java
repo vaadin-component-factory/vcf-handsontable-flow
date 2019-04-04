@@ -72,6 +72,11 @@ public class HandsontableDemoView extends VerticalLayout {
 
         JsonArray data = createJsonObject();
         handsontable = new Handsontable(data);
+
+        Settings settings = new Settings();
+        settings.setLicenseKey("non-commercial-and-evaluation");
+        settings.setColHeaders(true);
+        handsontable.setSettings(settings);
         handsontable.setId("hot1");
 
         Button setDataButton = new Button("Set data", event -> {
@@ -114,7 +119,16 @@ public class HandsontableDemoView extends VerticalLayout {
             handsontable.retrieveCellsMeta(list -> textArea.setValue(list.toString()));
         });
 
-        HorizontalLayout buttons = new HorizontalLayout(setDataButton, retrieveDataButton, retrieveDataAsArrayButton, setCellsMetaButton, retrieveCellsMetaButton);
+        Button setSettingsButton = new Button("Set settings", event -> {
+            Settings newSettings = new Settings();
+            newSettings.setLicenseKey("non-commercial-and-evaluation");
+            newSettings.setRowHeaders(true);
+            newSettings.setColHeaders(new String[]{"1", "2", "3", "4", "5", "6"});
+            handsontable.setSettings(newSettings);
+        });
+
+
+        HorizontalLayout buttons = new HorizontalLayout(setDataButton, retrieveDataButton, retrieveDataAsArrayButton, setCellsMetaButton, retrieveCellsMetaButton, setSettingsButton);
         add(handsontable, textArea, buttons);
     }
 
