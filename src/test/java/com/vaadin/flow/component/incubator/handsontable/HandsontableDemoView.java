@@ -11,12 +11,11 @@ import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
 
 @Route("")
-public class HandsontableDemoView extends VerticalLayout {
+public class HandsontableDemoView extends AbstractDemoView {
     private static final String SAMPLE_JSON_DATA =
             " [ \n" +
                     "{\n" +
@@ -92,21 +91,21 @@ public class HandsontableDemoView extends VerticalLayout {
         });
 
         Button setCellsMetaButton = new Button("Set cells meta", event -> {
-            List<Settings.Cell> cells = new ArrayList<>();
-            Settings.Cell cell;
-            cell = new Settings.Cell();
+            List<Cell> cells = new ArrayList<>();
+            Cell cell;
+            cell = new Cell();
             cell.setRow(1);
             cell.setCol(1);
             cell.setBold(true);
             cells.add(cell);
 
-            cell = new Settings.Cell();
+            cell = new Cell();
             cell.setRow(2);
             cell.setCol(1);
             cell.setStrikethrough(true);
             cells.add(cell);
 
-            cell = new Settings.Cell();
+            cell = new Cell();
             cell.setRow(1);
             cell.setCol(2);
             cell.setBorder(true);

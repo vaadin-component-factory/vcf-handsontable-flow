@@ -32,7 +32,7 @@ import com.vaadin.flow.function.SerializableConsumer;
 public class Handsontable extends Div {
     private Map<UUID, Consumer<JsonArray>> jsonArrayConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<List<String[]>>> listOfStringArrayConsumers = new HashMap<>(1);
-    private Map<UUID, Consumer<List<Settings.Cell>>> cellListConsumers = new HashMap<>(1);
+    private Map<UUID, Consumer<List<Cell>>> cellListConsumers = new HashMap<>(1);
 
     public Handsontable() {
         String initFunction = "createHandsontbale($0);";
@@ -60,7 +60,7 @@ public class Handsontable extends Div {
         getElement().callFunction("$handsontable.retrieveDataAsArray", uuid.toString());
     }
 
-    public void setCellsMeta(List<Settings.Cell> cellsSettings) {
+    public void setCellsMeta(List<Cell> cellsSettings) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String stringValue = mapper.writeValueAsString(cellsSettings);
@@ -70,7 +70,7 @@ public class Handsontable extends Div {
         }
     }
 
-    public void retrieveCellsMeta(Consumer<List<Settings.Cell>> callback) {
+    public void retrieveCellsMeta(Consumer<List<Cell>> callback) {
         UUID uuid = UUID.randomUUID();
         cellListConsumers.put(uuid, callback);
         getElement().callFunction("$handsontable.retrieveCellsMeta", uuid.toString());
@@ -135,23 +135,23 @@ public class Handsontable extends Div {
     @ClientCallable
     private void receiveCellsMeta(String uuidStr, String cellsMeta) {
         UUID uuid = UUID.fromString(uuidStr);
-        Consumer<List<Settings.Cell>> consumer = cellListConsumers.remove(uuid);
+        Consumer<List<Cell>> consumer = cellListConsumers.remove(uuid);
         Objects.requireNonNull(consumer, "cellListConsumer with the given UUID was not found!");
 
         JsonReader reader = Json.createReader(new StringReader(cellsMeta));
         JsonArray jsonArray = reader.readArray();
 
-        List<Settings.Cell> list = convertToListOfCellsArray(jsonArray);
+        List<Cell> list = convertToListOfCellsArray(jsonArray);
         reader.close();
         consumer.accept(list);
     }
 
-    private List<Settings.Cell> convertToListOfCellsArray(JsonArray jsonArray) {
-        List<Settings.Cell> list = new ArrayList<>(jsonArray.size());
+    private List<Cell> convertToListOfCellsArray(JsonArray jsonArray) {
+        List<Cell> list = new ArrayList<>(jsonArray.size());
         try {
             ObjectMapper mapper = new ObjectMapper();
             for (JsonValue jsonValue : jsonArray) {
-                Settings.Cell cell = mapper.readValue(jsonValue.toString(), Settings.Cell.class);
+                Cell cell = mapper.readValue(jsonValue.toString(), Cell.class);
                 list.add(cell);
             }
         } catch (IOException e) {

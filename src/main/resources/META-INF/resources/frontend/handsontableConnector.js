@@ -1,5 +1,42 @@
 function handsontableRenderer(instance, td, row, col, prop, value, cellProperties) {
-  Handsontable.renderers.TextRenderer.apply(this, arguments);
+  var renderer;
+
+  switch (cellProperties.type) {
+    case "autocomplete":
+      renderer = Handsontable.renderers.AutocompleteRenderer;
+      break;
+    case "base":
+      renderer = Handsontable.renderers.BaseRenderer;
+      break;
+    case "checkbox":
+      renderer = Handsontable.renderers.CheckboxRenderer;
+      break;
+    case "date":
+      renderer = Handsontable.renderers.DateRenderer;
+      break;
+    case "dropdown":
+      renderer = Handsontable.renderers.DropdownRenderer;
+      break;
+    case "html":
+      renderer = Handsontable.renderers.HtmlRenderer;
+      break;
+    case "numeric":
+      renderer = Handsontable.renderers.NumericRenderer;
+      break;
+    case "password":
+      renderer = Handsontable.renderers.PasswordRenderer;
+      break;
+    case "text":
+      renderer = Handsontable.renderers.TextRenderer;
+      break;
+    case "time":
+      renderer = Handsontable.renderers.TimeRenderer;
+      break;
+    default:
+      renderer = Handsontable.renderers.TextRenderer;
+  }
+
+  renderer.apply(this, arguments);
 
   if (cellProperties.bold) {
     td.style.fontWeight = 'bold';
@@ -38,7 +75,6 @@ function createHandsontbale(container, data) {
     colHeaders: true,
     mergeCells: true,
     formulas: true,
-    minSpareRows: 1,
     cells: function (row, col) {
       var cellProperties = {};
       var data = this.instance.getData();
@@ -134,33 +170,33 @@ function createHandsontbale(container, data) {
 
   hot.setCellsMeta = function (cellsMetaString) {
     var cellsMeta = JSON.parse(cellsMetaString);
-    cellsMeta.forEach(function(cellMeta) {
+    cellsMeta.forEach(function (cellMeta) {
       hot.setCellMetaObject(cellMeta.row, cellMeta.col, cellMeta);
     });
     this.updateSettings({});
   }
 
-  hot.retrieveCellsMeta = function(callId) {
+  hot.retrieveCellsMeta = function (callId) {
     var cellsMeta = this.getCellsMeta();
     var str = stringify(cellsMeta);
     container.$server.receiveCellsMeta(callId, str);
   }
 
-  hot.setSettings = function(settings) {
+  hot.setSettings = function (settings) {
     var settingsObject = JSON.parse(settings);
     this.updateSettings(settingsObject);
   }
 
-  hot.setNestedHeaders = function(nestedHeadersText) {
+  hot.setNestedHeaders = function (nestedHeadersText) {
     var nestedHeadersArray = JSON.parse(nestedHeadersText);
-    this.updateSettings({nestedHeaders: nestedHeadersArray});
+    this.updateSettings({ nestedHeaders: nestedHeadersArray });
   }
 }
 
 function stringify(obj) {
   var cache = [];
   return JSON.stringify(obj, function (key, value) {
-    if(key == 'instance')
+    if (key == 'instance')
       return;
     if (typeof value === 'object' && value !== null) {
       if (cache.indexOf(value) !== -1) {
