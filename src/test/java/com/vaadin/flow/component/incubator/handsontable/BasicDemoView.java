@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
 
-@Route("")
-public class HandsontableDemoView extends AbstractDemoView {
+@Route("basic")
+public class BasicDemoView extends AbstractDemoView {
     private static final String SAMPLE_JSON_DATA =
             " [ \n" +
                     "{\n" +
@@ -63,7 +64,9 @@ public class HandsontableDemoView extends AbstractDemoView {
     private TextArea textArea;
     private Handsontable handsontable;
 
-    public HandsontableDemoView() {
+    public BasicDemoView() {
+        add(new H1("Basic usage"));
+
         textArea = new TextArea("data");
         textArea.setValue(SAMPLE_JSON_DATA);
         textArea.setHeight("500px");

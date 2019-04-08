@@ -4,6 +4,7 @@ import javax.json.JsonArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.router.Route;
 
 @Route("nestedheaders")
@@ -24,6 +25,8 @@ public class NestedHeadersDemoView extends AbstractDemoView {
     private Handsontable handsontable;
 
     public NestedHeadersDemoView() {
+        add(new H1("Nested Headers"));
+
         JsonArray data = createJsonArray(SAMPLE_JSON_DATA);
         handsontable = new Handsontable(data);
         handsontable.setId("hot1");

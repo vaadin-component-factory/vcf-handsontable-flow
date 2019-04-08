@@ -4,6 +4,7 @@ import javax.json.JsonArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.router.Route;
 
 @Route("editor-types")
@@ -20,6 +21,8 @@ public class EditorTypesDemoView extends AbstractDemoView {
     private Handsontable handsontable;
 
     public EditorTypesDemoView() {
+        add(new H1("Editor types"));
+
         JsonArray data = createJsonArray(SAMPLE_JSON_DATA);
         handsontable = new Handsontable(data);
         handsontable.setId("hot1");
