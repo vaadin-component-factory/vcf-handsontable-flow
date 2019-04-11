@@ -35,12 +35,12 @@ public class Handsontable extends Div {
     private Map<UUID, Consumer<List<Cell>>> cellListConsumers = new HashMap<>(1);
 
     public Handsontable() {
-        String initFunction = "createHandsontbale($0);";
+        String initFunction = "createHandsontable($0);";
         UI.getCurrent().getPage().executeJavaScript(initFunction, this);
     }
 
     public Handsontable(JsonArray data) {
-        String initFunction = "createHandsontbale($0, $1);";
+        String initFunction = "createHandsontable($0, $1);";
         UI.getCurrent().getPage().executeJavaScript(initFunction, this, data.toString());
     }
 

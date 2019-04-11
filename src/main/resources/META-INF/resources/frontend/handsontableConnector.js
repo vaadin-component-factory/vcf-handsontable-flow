@@ -62,7 +62,7 @@ function handsontableRenderer(instance, td, row, col, prop, value, cellPropertie
 // maps function to lookup string
 Handsontable.renderers.registerRenderer('handsontableRenderer', handsontableRenderer);
 
-function createHandsontbale(container, data) {
+function createHandsontable(container, data) {
   var json = data ? JSON.parse(data) : null;
   if (container.$handsontable) {
     return;

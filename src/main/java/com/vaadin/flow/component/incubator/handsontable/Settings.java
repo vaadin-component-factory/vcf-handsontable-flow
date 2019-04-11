@@ -28,6 +28,8 @@ public class Settings implements Serializable {
     private int minRows = 0;
     private Boolean readOnly;
     private int minSpareRows = 0;
+    private Boolean manualColumnResize;
+    private Boolean manualRowResize;
 
     public List<Column> getColumns() {
         return columns;
@@ -65,10 +67,19 @@ public class Settings implements Serializable {
         return rowHeaders;
     }
 
+    /**
+     * @see #setColHeaders(Object)
+     * @return
+     */
     public Object getColHeaders() {
         return colHeaders;
     }
 
+    /**
+     * @param colHeaders can be either a boolean, for showing or hiding columns
+     *                   headers, or an array of String, to show the headers and
+     *                   set the columns headers.
+     */
     public void setColHeaders(Object colHeaders) {
         this.colHeaders = colHeaders;
     }
@@ -141,7 +152,7 @@ public class Settings implements Serializable {
         this.correctFormat = correctFormat;
     }
 
-    public boolean getFormulas() {
+    public boolean isFormulas() {
         return formulas;
     }
 
@@ -234,5 +245,21 @@ public class Settings implements Serializable {
         public void setColspan(int colspan) {
             this.colspan = colspan;
         }
+    }
+
+    public Boolean getManualColumnResize() {
+        return manualColumnResize;
+    }
+
+    public void setManualColumnResize(Boolean manualColumnResize) {
+        this.manualColumnResize = manualColumnResize;
+    }
+
+    public Boolean getManualRowResize() {
+        return manualRowResize;
+    }
+
+    public void setManualRowResize(Boolean manualRowResize) {
+        this.manualRowResize = manualRowResize;
     }
 }

@@ -3,13 +3,23 @@ package com.vaadin.flow.component.incubator.handsontable;
 import java.io.Serializable;
 
 public class Column implements Serializable {
+    private String data;
     private String type;
     private boolean readOnly;
-    private String format;
+    private String dateFormat;
+    private NumericFormat numericFormat;
     private boolean correctFormat = false;
     private Object editor;
     private Object source;
     private String className;
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 
     public String getType() {
         return type;
@@ -27,12 +37,20 @@ public class Column implements Serializable {
         this.readOnly = readOnly;
     }
 
-    public String getFormat() {
-        return format;
+    public String getDateFormat() {
+        return dateFormat;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    public NumericFormat getNumericFormat() {
+        return numericFormat;
+    }
+
+    public void setNumericFormat(NumericFormat numericFormat) {
+        this.numericFormat = numericFormat;
     }
 
     public boolean isCorrectFormat() {
@@ -59,10 +77,21 @@ public class Column implements Serializable {
         this.source = source;
     }
 
+    /**
+     * @see #setClassName(String)
+     * @return
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * sets the css class name(s) for this column. For example, to align the
+     * column content horizontally, htLeft, htCenter, htRight and htJustify
+     * class names can be used and, for vertical alignment, htTop, htMiddle and
+     * htBottom.
+     * @param className
+     */
     public void setClassName(String className) {
         this.className = className;
     }

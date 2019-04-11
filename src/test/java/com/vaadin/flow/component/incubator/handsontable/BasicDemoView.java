@@ -33,7 +33,7 @@ public class BasicDemoView extends AbstractDemoView {
                     "   \"name\": \"John\", \n" +
                     "   \"age\" : 34, \n" +
                     "   \"isMarried\" : false, \n" +
-                    "   \"addr ess\": { \n" +
+                    "   \"address\": { \n" +
                     "     \"street\": \"#1234, Kurala Street\", \n" +
                     "     \"zipCode\": \"123456\" \n" +
                     "   }, \n" +
