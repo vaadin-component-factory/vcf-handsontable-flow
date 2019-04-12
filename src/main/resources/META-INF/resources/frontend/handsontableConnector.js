@@ -62,10 +62,14 @@ function handsontableRenderer(instance, td, row, col, prop, value, cellPropertie
 // maps function to lookup string
 Handsontable.renderers.registerRenderer('handsontableRenderer', handsontableRenderer);
 
-function createHandsontable(container, data) {
+function createHandsontable(container, language, data) {
   var json = data ? JSON.parse(data) : null;
   if (container.$handsontable) {
     return;
+  }
+
+  if (!Handsontable.languages.getLanguageDictionary(language)) {
+    language = 'en-US';
   }
 
   var hot = new Handsontable(container, {
@@ -75,6 +79,7 @@ function createHandsontable(container, data) {
     colHeaders: true,
     mergeCells: true,
     formulas: true,
+    language: language,
     cells: function (row, col) {
       var cellProperties = {};
       var data = this.instance.getData();
@@ -107,47 +112,53 @@ function createHandsontable(container, data) {
     }, 0);
   };
 
-  hot.updateSettings({
-    contextMenu: {
-      items: {
-        'row_above': 'row_above',
-        'row_below': 'row_below',
-        'remove_row': 'remove_row',
-        'space1': '---------',
-        'col_left': 'col_left',
-        'col_right': 'col_right',
-        'remove_col': 'remove_col',
-        'space2': '---------',
-        'mergeCells': 'mergeCells',
-        'space3': '---------',
-        'bold': {
-          key: 'bold',
-          name: 'Bold',
-          callback: hot.toggleCellBooleanMeta
-        },
-        'italic': {
-          key: 'italic',
-          name: 'Italic',
-          callback: hot.toggleCellBooleanMeta
-        },
-        'strikethrough': {
-          key: 'strikethrough',
-          name: 'Strike through',
-          callback: hot.toggleCellBooleanMeta
-        },
-        'underscore': {
-          key: 'underscore',
-          name: 'Underscore',
-          callback: hot.toggleCellBooleanMeta
-        },
-        'border': {
-          key: 'border',
-          name: 'Border',
-          callback: hot.toggleCellBooleanMeta
-        },
+  hot.updateContextMenu = function (language) {
+    var hot = this;
+    i18n.locale = language;
+    hot.updateSettings({
+      contextMenu: {
+        items: {
+          'row_above': 'row_above',
+          'row_below': 'row_below',
+          'remove_row': 'remove_row',
+          'space1': '---------',
+          'col_left': 'col_left',
+          'col_right': 'col_right',
+          'remove_col': 'remove_col',
+          'space2': '---------',
+          'mergeCells': 'mergeCells',
+          'space3': '---------',
+          'bold': {
+            key: 'bold',
+            name: i18n`Bold`,
+            callback: hot.toggleCellBooleanMeta
+          },
+          'italic': {
+            key: 'italic',
+            name: i18n`Italic`,
+            callback: hot.toggleCellBooleanMeta
+          },
+          'strikethrough': {
+            key: 'strikethrough',
+            name: i18n`Strike through`,
+            callback: hot.toggleCellBooleanMeta
+          },
+          'underscore': {
+            key: 'underscore',
+            name: i18n`Underscore`,
+            callback: hot.toggleCellBooleanMeta
+          },
+          'border': {
+            key: 'border',
+            name: i18n`Border`,
+            callback: hot.toggleCellBooleanMeta
+          },
+        }
       }
-    }
-  });
+    });
+  }
+
+  hot.updateContextMenu(language);
 
   hot.setData = function (data) {
     var json = JSON.parse(data);
@@ -184,6 +195,12 @@ function createHandsontable(container, data) {
 
   hot.setSettings = function (settings) {
     var settingsObject = JSON.parse(settings);
+    if (settingsObject.language) {
+      if (!Handsontable.languages.getLanguageDictionary(settingsObject.language)) {
+        settingsObject.language = 'en-US';
+      }
+      this.updateContextMenu(settingsObject.language);
+    }
     this.updateSettings(settingsObject);
   }
 
@@ -215,3 +232,54 @@ function stringify(obj) {
     return value;
   });
 }
+
+// ==== Internationalization ====
+function i18n(template) {
+  var localeDb = i18n.db[i18n.locale] || i18n.db['en-US']
+  for (var
+    info = localeDb[template.join('\x01')],
+    out = [info.t[0]],
+    i = 1, length = info.t.length; i < length; i++
+  ) out[i] = arguments[1 + info.v[i - 1]] + info.t[i];
+  return out.join('');
+};
+
+i18n.locale = 'en-US';
+i18n.db = {};
+
+i18n.set = locale => (tCurrent, ...rCurrent) => {
+  const key = tCurrent.join('\x01');
+  let db = i18n.db[locale] || (i18n.db[locale] = {});
+  db[key] = {
+    t: tCurrent.slice(),
+    v: rCurrent.map((value, i) => i)
+  };
+  const config = {
+    for: other => (tOther, ...rOther) => {
+      db = i18n.db[other] || (i18n.db[other] = {});
+      db[key] = {
+        t: tOther.slice(),
+        v: rOther.map((value, i) => rCurrent.indexOf(value))
+      };
+      return config;
+    }
+  };
+  return config;
+};
+
+i18n.set('en-US')`Bold`
+  .for('de-DE')`Fett`;
+
+i18n.set('en-US')`Italic`
+  .for('de-DE')`Kursiv`;
+
+i18n.set('en-US')`Strike through`
+  .for('de-DE')`Durchgestrichen`;
+
+i18n.set('en-US')`Underscore`
+  .for('de-DE')`Unterstreichen`;
+
+i18n.set('en-US')`Border`
+  .for('de-DE')`Rand`;
+
+// ==============================

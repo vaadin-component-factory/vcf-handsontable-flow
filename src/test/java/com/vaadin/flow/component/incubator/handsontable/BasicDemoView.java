@@ -7,8 +7,10 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -65,6 +67,8 @@ public class BasicDemoView extends AbstractDemoView {
     private Handsontable handsontable;
 
     public BasicDemoView() {
+        UI.getCurrent().setLocale(Locale.GERMANY);
+
         add(new H1("Basic usage"));
 
         textArea = new TextArea("data");
@@ -129,8 +133,13 @@ public class BasicDemoView extends AbstractDemoView {
             handsontable.setSettings(newSettings);
         });
 
+        Button changeLanguageButton = new Button("Change Language", event -> {
+            Settings newSettings = new Settings();
+            newSettings.setLanguage("en-FI");
+            handsontable.setSettings(newSettings);
+        });
 
-        HorizontalLayout buttons = new HorizontalLayout(setDataButton, retrieveDataButton, retrieveDataAsArrayButton, setCellsMetaButton, retrieveCellsMetaButton, setSettingsButton);
+        HorizontalLayout buttons = new HorizontalLayout(setDataButton, retrieveDataButton, retrieveDataAsArrayButton, setCellsMetaButton, retrieveCellsMetaButton, setSettingsButton, changeLanguageButton);
         add(handsontable, textArea, buttons);
     }
 

@@ -2,6 +2,9 @@ package com.vaadin.flow.component.incubator.handsontable;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Column implements Serializable {
     private String data;
     private String type;

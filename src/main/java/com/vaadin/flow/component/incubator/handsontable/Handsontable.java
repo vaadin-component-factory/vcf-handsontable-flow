@@ -27,6 +27,7 @@ import com.vaadin.flow.function.SerializableConsumer;
 
 @JavaScript("frontend://handsontable/dist/handsontable.full.js")
 @StyleSheet("frontend://handsontable/dist/handsontable.full.css")
+@JavaScript("frontend://handsontable/dist/languages/all.js")
 @JavaScript("frontend://handsontableConnector.js")
 @StyleSheet("frontend://handsontable-extra.css")
 public class Handsontable extends Div {
@@ -35,13 +36,15 @@ public class Handsontable extends Div {
     private Map<UUID, Consumer<List<Cell>>> cellListConsumers = new HashMap<>(1);
 
     public Handsontable() {
-        String initFunction = "createHandsontable($0);";
-        UI.getCurrent().getPage().executeJavaScript(initFunction, this);
+        String language = UI.getCurrent().getLocale().toString().replaceAll("_", "-");
+        String initFunction = "createHandsontable($0, $1);";
+        UI.getCurrent().getPage().executeJavaScript(initFunction, this, language);
     }
 
     public Handsontable(JsonArray data) {
-        String initFunction = "createHandsontable($0, $1);";
-        UI.getCurrent().getPage().executeJavaScript(initFunction, this, data.toString());
+        String language = UI.getCurrent().getLocale().toString().replaceAll("_", "-");
+        String initFunction = "createHandsontable($0, $1, $2);";
+        UI.getCurrent().getPage().executeJavaScript(initFunction, this, language, data.toString());
     }
 
     public void setData(JsonArray data) {

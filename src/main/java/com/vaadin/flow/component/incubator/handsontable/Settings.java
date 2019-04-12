@@ -3,6 +3,9 @@ package com.vaadin.flow.component.incubator.handsontable;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Settings implements Serializable {
     private List<Column> columns;
     private List<Cell> cell;
@@ -30,6 +33,7 @@ public class Settings implements Serializable {
     private int minSpareRows = 0;
     private Boolean manualColumnResize;
     private Boolean manualRowResize;
+    private String language;
 
     public List<Column> getColumns() {
         return columns;
@@ -206,6 +210,14 @@ public class Settings implements Serializable {
 
     public void setMinSpareRows(int minSpareRows) {
         this.minSpareRows = minSpareRows;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public static class MergeCell implements Serializable {
