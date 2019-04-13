@@ -143,7 +143,10 @@
             <supportedPackaging>jar</supportedPackaging>
           </supportedPackagings>
           <webAppConfig>
-            <resourceBase>src/main/resources/META-INF/resources</resourceBase>
+                        <resourceBases>
+                            <baseResource>src/main/resources/META-INF/resources</baseResource>
+                            <baseResource>src/test/resources/META-INF/resources</baseResource>
+                        </resourceBases>
           </webAppConfig>
         </configuration>
       </plugin>

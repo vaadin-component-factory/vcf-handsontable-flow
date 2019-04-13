@@ -4,13 +4,19 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * contains options for one cell that is specified by <code>row</code> and
+ * <code>col</code>
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Cell implements Serializable {
     private int row;
     private int col;
+
     private String type;
     private boolean readOnly;
-    private String format;
+    private String dateFormat;
+    private NumericFormat numericFormat;
     private boolean bold;
     private boolean italic;
     private boolean strikethrough;
@@ -30,22 +36,42 @@ public class Cell implements Serializable {
         this.col = col;
     }
 
+    /**
+     * @see #setRow(int)
+     * @return
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * zero-based row index
+     * @param row
+     */
     public void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     * @see #setCol(int)
+     * @return
+     */
     public int getCol() {
         return col;
     }
 
+    /**
+     * zero-based col index
+     * @param col
+     */
     public void setCol(int col) {
         this.col = col;
     }
 
+    /**
+     * @see #setType(String)
+     * @return
+     */
     public String getType() {
         return type;
     }
@@ -74,12 +100,36 @@ public class Cell implements Serializable {
         this.readOnly = readOnly;
     }
 
-    public String getFormat() {
-        return format;
+    /**
+     * @see #setDateFormat(String)
+     * @return
+     */
+    public String getDateFormat() {
+        return dateFormat;
     }
 
-    public void setFormat(String format) {
-        this.format = format;
+    /**
+     * e.g. DD/MM/YYYY. It applies only to the cells with date type.
+     * @param dateFormat
+     */
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    /**
+     * @see #setNumericFormat(NumericFormat)
+     * @return
+     */
+    public NumericFormat getNumericFormat() {
+        return numericFormat;
+    }
+
+    /**
+     * It applies only to the cells with numeric data type.
+     * @param numericFormat
+     */
+    public void setNumericFormat(NumericFormat numericFormat) {
+        this.numericFormat = numericFormat;
     }
 
     public boolean isBold() {
@@ -114,10 +164,18 @@ public class Cell implements Serializable {
         this.underscore = underscore;
     }
 
+    /**
+     * @see #setBorder(boolean)
+     * @return
+     */
     public boolean isBorder() {
         return border;
     }
 
+    /**
+     * If set to true a 1 pixel solid black border is added to the cell.
+     * @param border
+     */
     public void setBorder(boolean border) {
         this.border = border;
     }
@@ -134,6 +192,10 @@ public class Cell implements Serializable {
         return correctFormat;
     }
 
+    /**
+     *
+     * @param correctFormat
+     */
     public void setCorrectFormat(boolean correctFormat) {
         this.correctFormat = correctFormat;
     }
@@ -154,10 +216,20 @@ public class Cell implements Serializable {
         this.source = source;
     }
 
+    /**
+     * @see #setClassName(String)
+     * @return
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * sets the css class name(s) for this cell. For example, to align the cell
+     * content horizontally, htLeft, htCenter, htRight and htJustify class names
+     * can be used and, for vertical alignment, htTop, htMiddle, htBottom.
+     * @param className
+     */
     public void setClassName(String className) {
         this.className = className;
     }
@@ -169,7 +241,7 @@ public class Cell implements Serializable {
                 ", col=" + col +
                 ", type='" + type + '\'' +
                 ", readOnly=" + readOnly +
-                ", format='" + format + '\'' +
+                ", dateFormat='" + dateFormat + '\'' +
                 ", bold=" + bold +
                 ", italic=" + italic +
                 ", strikethrough=" + strikethrough +
