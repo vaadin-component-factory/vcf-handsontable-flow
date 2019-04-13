@@ -1,3 +1,6 @@
 .idea/
 sonarIssues.xml
 *.iml
+/target/
+/.classpath
+/.project
