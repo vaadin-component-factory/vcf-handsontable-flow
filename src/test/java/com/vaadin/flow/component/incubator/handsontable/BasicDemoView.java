@@ -133,13 +133,22 @@ public class BasicDemoView extends AbstractDemoView {
             handsontable.setSettings(newSettings);
         });
 
-        Button changeLanguageButton = new Button("Change Language", event -> {
+        Button changeLanguageToEnglishButton = new Button("English Language", event -> {
             Settings newSettings = new Settings();
             newSettings.setLanguage("en-FI");
             handsontable.setSettings(newSettings);
         });
 
-        HorizontalLayout buttons = new HorizontalLayout(setDataButton, retrieveDataButton, retrieveDataAsArrayButton, setCellsMetaButton, retrieveCellsMetaButton, setSettingsButton, changeLanguageButton);
+        Button changeLanguageToGermanButton = new Button("German Language", event -> {
+            Settings newSettings = new Settings();
+            newSettings.setLanguage("de-DE");
+            handsontable.setSettings(newSettings);
+        });
+
+        HorizontalLayout buttons = new HorizontalLayout(setDataButton,
+                retrieveDataButton, retrieveDataAsArrayButton,
+                setCellsMetaButton, retrieveCellsMetaButton, setSettingsButton,
+                changeLanguageToEnglishButton, changeLanguageToGermanButton);
         add(handsontable, textArea, buttons);
     }
 
