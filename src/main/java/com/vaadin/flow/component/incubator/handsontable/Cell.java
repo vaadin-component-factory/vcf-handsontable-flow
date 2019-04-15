@@ -200,10 +200,31 @@ public class Cell implements Serializable {
         this.correctFormat = correctFormat;
     }
 
+    /**
+     * @see #setEditor(Object)
+     * @return
+     */
     public Object getEditor() {
         return editor;
     }
 
+    /**
+     * defines the editor for the cell. Its value can be one of the followings
+     * strings. <ul>
+     * <li>autocomplete</li>
+     * <li>checkbox</li>
+     * <li>date</li>
+     * <li>dropdown</li>
+     * <li>handsontable</li>
+     * <li>mobile</li>
+     * <li>password</li>
+     * <li>select</li>
+     * <li>text</li>
+     * </ul>
+     * It can also be used to disable the cell editing by setting its value to
+     * <code>false</code>.
+     * @param editor
+     */
     public void setEditor(Object editor) {
         this.editor = editor;
     }
