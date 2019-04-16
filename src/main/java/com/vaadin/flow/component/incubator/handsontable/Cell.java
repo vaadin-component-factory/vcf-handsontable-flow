@@ -22,7 +22,6 @@ public class Cell implements Serializable {
     private boolean strikethrough;
     private boolean underscore;
     private boolean border;
-    private String name;
     private boolean correctFormat = false;
     private Object editor;
     private Object source;
@@ -92,10 +91,17 @@ public class Cell implements Serializable {
         this.type = type;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isReadOnly() {
         return readOnly;
     }
 
+    /**
+     * @param readOnly
+     */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
     }
@@ -132,34 +138,69 @@ public class Cell implements Serializable {
         this.numericFormat = numericFormat;
     }
 
+    /**
+     * @see #setBold(boolean)
+     * @return
+     */
     public boolean isBold() {
         return bold;
     }
 
+    /**
+     * @param bold if true, <code>fontWeight</code> of the cell is set to
+     *             <code>bold</code>.
+     */
     public void setBold(boolean bold) {
         this.bold = bold;
     }
 
+    /**
+     * @see #setItalic(boolean)
+     * @return
+     */
     public boolean isItalic() {
         return italic;
     }
 
+    /**
+     *
+     * @param italic if true, <code>fontStyle</code> of the cell is set to
+     *               <code>italic</code>.
+     */
     public void setItalic(boolean italic) {
         this.italic = italic;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isStrikethrough() {
         return strikethrough;
     }
 
+    /**
+     *
+     * @param strikethrough if true, <code>textDecoration</code> of the cell is
+     *                      set to <code>line-through</code>.
+     */
     public void setStrikethrough(boolean strikethrough) {
         this.strikethrough = strikethrough;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isUnderscore() {
         return underscore;
     }
 
+    /**
+     *
+     * @param underscore if true, <code>textDecoration</code> of the cell is
+     *                   set to <code>underline</code>.
+     */
     public void setUnderscore(boolean underscore) {
         this.underscore = underscore;
     }
@@ -180,21 +221,20 @@ public class Cell implements Serializable {
         this.border = border;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**
+     * @see #setCorrectFormat(boolean)
+     * @return
+     */
     public boolean isCorrectFormat() {
         return correctFormat;
     }
 
     /**
      *
-     * @param correctFormat
+     * @param correctFormat If true then dates will be automatically formatted
+     *                      to match the desired format.
+     *
+     * Note, this option only works for date-typed cells.
      */
     public void setCorrectFormat(boolean correctFormat) {
         this.correctFormat = correctFormat;
@@ -229,10 +269,19 @@ public class Cell implements Serializable {
         this.editor = editor;
     }
 
+    /**
+     * @see #setSource(Object)
+     * @return
+     */
     public Object getSource() {
         return source;
     }
 
+    /**
+     *
+     * @param source Defines data source for Autocomplete or Dropdown cell
+     *               types. It can be an array of String.
+     */
     public void setSource(Object source) {
         this.source = source;
     }

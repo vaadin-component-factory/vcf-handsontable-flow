@@ -52,6 +52,8 @@ public class EditorTypesDemoView extends AbstractDemoView {
 
         column = new Column();
         column.setType("text");
+        column.setEditor("dropdown");
+        column.setSource(new String[] {"Titel", "Personaltabelle", "Text"});
         columns.add(column);
 
         column = new Column();
