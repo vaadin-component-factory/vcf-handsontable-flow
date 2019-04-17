@@ -24,56 +24,92 @@ public class Settings implements Serializable {
     private Object colWidths;
     private Object rowHeights;
     private Boolean correctFormat = false;
-    private boolean formulas = true;
+    private Boolean formulas = true;
     private String height;
     private Object mergeCells;
-    private int minCols = 0;
-    private int minRows = 0;
+    private Integer minCols = 0;
+    private Integer minRows = 0;
     private Boolean readOnly;
-    private int minSpareRows = 0;
+    private Integer minSpareRows = 0;
     private Boolean manualColumnResize;
     private Boolean manualRowResize;
     private String language;
 
+    /**
+     * @return
+     * @see #setColumns(List)
+     */
     public List<Column> getColumns() {
         return columns;
     }
 
+    /**
+     * sets list of columns to be shown in the table. Note that if the columns
+     * are set by this method no column is automatically generated based on the
+     * data.
+     *
+     * @param columns
+     */
     public void setColumns(List<Column> columns) {
         this.columns = columns;
     }
 
+    /**
+     * @return
+     * @see #setCell(List)
+     */
     public List<Cell> getCell() {
         return cell;
     }
 
+    /**
+     * sets options and meta-data for the given cells.
+     *
+     * @param cell
+     */
     public void setCell(List<Cell> cell) {
         this.cell = cell;
     }
 
+    /**
+     * @return
+     * @see #setLicenseKey(String)
+     */
     public String getLicenseKey() {
         return licenseKey;
     }
 
+    /**
+     * sets Handsontable's license key.
+     *
+     * @param licenseKey
+     */
     public void setLicenseKey(String licenseKey) {
         this.licenseKey = licenseKey;
     }
 
-    public Object isRowHeaders() {
-        return rowHeaders;
-    }
-
-    public void setRowHeaders(Boolean rowHeaders) {
-        this.rowHeaders = rowHeaders;
-    }
-
+    /**
+     * @return
+     * @see #setRowHeaders(Object)
+     */
     public Object getRowHeaders() {
         return rowHeaders;
     }
 
     /**
-     * @see #setColHeaders(Object)
+     * either sets row headers texts or hide row headers.
+     *
+     * @param rowHeaders can be either a Boolean value to show/hide row headers
+     *                   or an array of String to set row headers texts. The
+     *                   default headers are numbers starting from one.
+     */
+    public void setRowHeaders(Object rowHeaders) {
+        this.rowHeaders = rowHeaders;
+    }
+
+    /**
      * @return
+     * @see #setColHeaders(Object)
      */
     public Object getColHeaders() {
         return colHeaders;
@@ -82,195 +118,306 @@ public class Settings implements Serializable {
     /**
      * @param colHeaders can be either a boolean, for showing or hiding columns
      *                   headers, or an array of String, to show the headers and
-     *                   set the columns headers.
+     *                   set the columns headers. The default headers texts are
+     *                   alphabet characters starting from A.
      */
     public void setColHeaders(Object colHeaders) {
         this.colHeaders = colHeaders;
     }
 
+    /**
+     * @return
+     * @see #setAllowInsertColumn(Boolean)
+     */
     public Boolean getAllowInsertColumn() {
         return allowInsertColumn;
     }
 
+    /**
+     * @param allowInsertColumn if true, allows user to add column by choosing
+     *                          corresponding commands in context-menu.
+     */
     public void setAllowInsertColumn(Boolean allowInsertColumn) {
         this.allowInsertColumn = allowInsertColumn;
     }
 
+    /**
+     * @return
+     * @see #setAllowInsertRow(Boolean)
+     */
     public Boolean getAllowInsertRow() {
         return allowInsertRow;
     }
 
+    /**
+     * @param allowInsertRow if true, allows user to add row by choosing
+     *                       corresponding commands in context-menu.
+     */
     public void setAllowInsertRow(Boolean allowInsertRow) {
         this.allowInsertRow = allowInsertRow;
     }
 
+    /**
+     * @return
+     * @see #setAllowRemoveColumn(Boolean)
+     */
     public Boolean getAllowRemoveColumn() {
         return allowRemoveColumn;
     }
 
+    /**
+     * @param allowRemoveColumn if true, allows user to remove column by
+     *                          choosing the corresponding command in
+     *                          context-menu.
+     */
     public void setAllowRemoveColumn(Boolean allowRemoveColumn) {
         this.allowRemoveColumn = allowRemoveColumn;
     }
 
+    /**
+     * @return
+     * @see #setAllowRemoveRow(Boolean)
+     */
     public Boolean getAllowRemoveRow() {
         return allowRemoveRow;
     }
 
+    /**
+     * @param allowRemoveRow if true, allows user to remove row by choosing
+     *                       the corresponding command in context-menu.
+     */
     public void setAllowRemoveRow(Boolean allowRemoveRow) {
         this.allowRemoveRow = allowRemoveRow;
     }
 
+    /**
+     * @return
+     * @see #setAutoWrapRow(Boolean)
+     */
     public Boolean getAutoWrapRow() {
         return autoWrapRow;
     }
 
+    /**
+     * @param autoWrapRow if true, pressing TAB or right arrow in the last
+     *                    column will move to first column in next row.
+     */
     public void setAutoWrapRow(Boolean autoWrapRow) {
         this.autoWrapRow = autoWrapRow;
     }
 
-    public void setRowHeaders(Object rowHeaders) {
-        this.rowHeaders = rowHeaders;
-    }
-
+    /**
+     * @return
+     * @see #setColWidths(Object)
+     */
     public Object getColWidths() {
         return colWidths;
     }
 
+    /**
+     * defines column widths in pixels.
+     *
+     * @param colWidths can be either Integer, String (e.g. "100px") or array of
+     *                  Integers.
+     */
     public void setColWidths(Object colWidths) {
         this.colWidths = colWidths;
     }
 
+    /**
+     * @return
+     * @see #setRowHeights(Object)
+     */
     public Object getRowHeights() {
         return rowHeights;
     }
 
+    /**
+     * defines row heights in pixels.
+     *
+     * @param rowHeights can be either Integer, String (e.g. "100px") or array of
+     *                   Integers.
+     */
     public void setRowHeights(Object rowHeights) {
         this.rowHeights = rowHeights;
     }
 
+    /**
+     * @see #setCorrectFormat(Boolean)
+     * @return
+     */
     public Boolean getCorrectFormat() {
         return correctFormat;
     }
 
+    /**
+     * @see Cell#setCorrectFormat(boolean)
+     * @param correctFormat
+     */
     public void setCorrectFormat(Boolean correctFormat) {
         this.correctFormat = correctFormat;
     }
 
-    public boolean isFormulas() {
+    /**
+     * @see #setFormulas(Boolean)
+     * @return
+     */
+    public Boolean isFormulas() {
         return formulas;
     }
 
-    public void setFormulas(boolean formulas) {
+    /**
+     * enable/disable formula
+     * @param formulas
+     */
+    public void setFormulas(Boolean formulas) {
         this.formulas = formulas;
     }
 
+    /**
+     * @see #setHeight(String)
+     * @return
+     */
     public String getHeight() {
         return height;
     }
 
+    /**
+     *
+     * @param height can be a number or a String (e.g. "100px")
+     */
     public void setHeight(String height) {
         this.height = height;
     }
 
+    /**
+     * @see #setMergeCells(Object)
+     * @return
+     */
     public Object getMergeCells() {
         return mergeCells;
     }
 
+    /**
+     *
+     * @param mergeCells can be either a Boolean value to enable/disable merging
+     *                   cells or a list of <code>MergeCell</code> to merge
+     *                   cells programmatically.
+     */
     public void setMergeCells(Object mergeCells) {
         this.mergeCells = mergeCells;
     }
 
-    public int getMinCols() {
+    /**
+     *
+     * @return
+     * @see #setMinCols(Integer)
+     */
+    public Integer getMinCols() {
         return minCols;
     }
 
-    public void setMinCols(int minCols) {
+    /**
+     * sets the minimum number of columns.
+     * @param minCols
+     */
+    public void setMinCols(Integer minCols) {
         this.minCols = minCols;
     }
 
-    public int getMinRows() {
+    /**
+     * @see #setMinRows(Integer)
+     * @return
+     */
+    public Integer getMinRows() {
         return minRows;
     }
 
-    public void setMinRows(int minRows) {
+    /**
+     * sets the minimum number of rows.
+     * @param minRows
+     */
+    public void setMinRows(Integer minRows) {
         this.minRows = minRows;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     *
+     * @param readOnly
+     */
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
-    public int getMinSpareRows() {
+    /**
+     *
+     * @return
+     * @see #setMinSpareRows(Integer)
+     */
+    public Integer getMinSpareRows() {
         return minSpareRows;
     }
 
-    public void setMinSpareRows(int minSpareRows) {
+    /**
+     *
+     * @param minSpareRows number of empty rows at the end of the table.
+     */
+    public void setMinSpareRows(Integer minSpareRows) {
         this.minSpareRows = minSpareRows;
     }
 
+    /**
+     * @see #setLanguage(String)
+     * @return
+     */
     public String getLanguage() {
         return language;
     }
 
+    /**
+     *
+     * @param language e.g. en-US or de-DE
+     */
     public void setLanguage(String language) {
         this.language = language;
     }
 
-    public static class MergeCell implements Serializable {
-        private int row;
-        private int col;
-        private int rowspan;
-        private int colspan;
-
-        public int getRow() {
-            return row;
-        }
-
-        public void setRow(int row) {
-            this.row = row;
-        }
-
-        public int getCol() {
-            return col;
-        }
-
-        public void setCol(int col) {
-            this.col = col;
-        }
-
-        public int getRowspan() {
-            return rowspan;
-        }
-
-        public void setRowspan(int rowspan) {
-            this.rowspan = rowspan;
-        }
-
-        public int getColspan() {
-            return colspan;
-        }
-
-        public void setColspan(int colspan) {
-            this.colspan = colspan;
-        }
-    }
-
+    /**
+     * @see #setManualColumnResize(Boolean)
+     * @return
+     */
     public Boolean getManualColumnResize() {
         return manualColumnResize;
     }
 
+    /**
+     * Turns on/off manual column resize
+     * @param manualColumnResize
+     */
     public void setManualColumnResize(Boolean manualColumnResize) {
         this.manualColumnResize = manualColumnResize;
     }
 
+    /**
+     * @see #setManualRowResize(Boolean)
+     * @return
+     */
     public Boolean getManualRowResize() {
         return manualRowResize;
     }
 
+    /**
+     * Turns on/off manual row resize
+     * @param manualRowResize
+     */
     public void setManualRowResize(Boolean manualRowResize) {
         this.manualRowResize = manualRowResize;
     }

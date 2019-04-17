@@ -204,6 +204,17 @@ function createHandsontable(container, language, data) {
     this.updateSettings(settingsObject);
   }
 
+  hot.retrieveSettings = function (callId) {
+    var settings = this.getSettings();
+    var str = stringify(settings.__proto__);
+    container.$server.receiveSettings(callId, str);
+  }
+
+  hot.retrieveDataAtCell = function (row, col, callId) {
+    var value = this.getDataAtCell(row, col);
+    container.$server.receiveString(callId, value);
+  }
+
   hot.setNestedHeaders = function (nestedHeadersText) {
     var nestedHeadersArray = JSON.parse(nestedHeadersText);
     this.updateSettings({ nestedHeaders: nestedHeadersArray });

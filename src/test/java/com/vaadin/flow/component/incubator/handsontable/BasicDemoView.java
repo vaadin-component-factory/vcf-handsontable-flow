@@ -3,13 +3,17 @@ package com.vaadin.flow.component.incubator.handsontable;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonReader;
+import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -133,14 +137,50 @@ public class BasicDemoView extends AbstractDemoView {
             handsontable.setSettings(newSettings);
         });
 
-        Button changeLanguageButton = new Button("Change Language", event -> {
+        Button changeLanguageToEnglishButton = new Button("English Language", event -> {
             Settings newSettings = new Settings();
             newSettings.setLanguage("en-FI");
             handsontable.setSettings(newSettings);
         });
 
-        HorizontalLayout buttons = new HorizontalLayout(setDataButton, retrieveDataButton, retrieveDataAsArrayButton, setCellsMetaButton, retrieveCellsMetaButton, setSettingsButton, changeLanguageButton);
-        add(handsontable, textArea, buttons);
+        Button changeLanguageToGermanButton = new Button("German Language", event -> {
+            Settings newSettings = new Settings();
+            newSettings.setLanguage("de-DE");
+            handsontable.setSettings(newSettings);
+        });
+
+        HorizontalLayout buttons = new HorizontalLayout(setDataButton,
+                retrieveDataButton, retrieveDataAsArrayButton,
+                setCellsMetaButton, retrieveCellsMetaButton, setSettingsButton,
+                changeLanguageToEnglishButton, changeLanguageToGermanButton);
+
+        Button receiveSettingsButton = new Button("Receive settings", event -> {
+            handsontable.retrieveSettings(receivedSettings -> {
+                try (StringWriter writer = new StringWriter()) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+                    mapper.writeValue(writer, receivedSettings);
+                    String stringValue = writer.toString();
+                    textArea.setValue(stringValue);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        });
+
+        Button setDataAtCellButton = new Button("Set data at cell", event -> {
+            handsontable.setDataAtCell(1, 1, "abcd");
+        });
+
+        Button retriveDataAtCellButton = new Button("Retrieve data at cell", event -> {
+            handsontable.retrieveDataAtCell(2, 2, value -> {
+                textArea.setValue("The value at the cell [2, 2] is: " + value);
+            });
+        });
+
+        HorizontalLayout moreButtons = new HorizontalLayout(receiveSettingsButton, setDataAtCellButton, retriveDataAtCellButton);
+
+        add(handsontable, textArea, buttons, moreButtons);
     }
 
     private JsonArray createJsonObject() {
