@@ -35,6 +35,7 @@ public class FormattingDemoView extends AbstractDemoView {
         settings.setColumns(columns);
 
         handsontable.setSettings(settings);
+        handsontable.setHeaderClassNames(new String[]{"left-header","center-header","right-header"});
 
         add(handsontable);
     }

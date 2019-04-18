@@ -101002,6 +101002,8 @@ function () {
       cellValue.setState(_value.default.STATE_COMPUTING);
       this._processingCell = cellValue;
 
+      formula = replaceFormulaProperties(this.hot, formula, cellValue._row);
+
       var _this$parser$parse = this.parser.parse((0, _utils.toUpperCaseFormula)(formula)),
           error = _this$parser$parse.error,
           result = _this$parser$parse.result;
@@ -101080,7 +101082,9 @@ function () {
       }
 
       if ((0, _utils.isFormulaExpression)(cellValue)) {
-        var _this$parser$parse2 = this.parser.parse(cellValue.substr(1)),
+        var formula = cellValue.substr(1);
+        formula = replaceFormulaProperties(this.hot, formula, _ref.row.index);
+        var _this$parser$parse2 = this.parser.parse(formula),
             error = _this$parser$parse2.error,
             result = _this$parser$parse2.result;
 
@@ -110792,3 +110796,32 @@ exports.default = _default;
 /***/ })
 /******/ ])["default"];
 });
+
+function replaceFormulaProperties(hot, formula, row) {
+  var pattern = /\[[a-zA-Z]+[a-zA-Z0-9_]*\]/;
+  pattern.compile(pattern);
+  var columnsCount = hot.countCols();
+  while (pattern.test(formula)) {
+    var name = pattern.exec(formula)[0];
+
+    var propertyName = name.substr(1, name.length - 2).toUpperCase();
+    var columnIndex;
+    for (var i = 0; i < columnsCount; i++) {
+      if (propertyName == ("" + hot.colToProp(i)).toUpperCase()) {
+        columnIndex = i;
+        break;
+      }
+    }
+    var columnAddress;
+    if (columnIndex < 26)
+      columnAddress = String.fromCharCode(columnIndex + 65);
+    else
+      columnAddress = String.fromCharCode(columnIndex / 26 + 64) + String.fromCharCode(columnIndex % 26 + 65);
+
+    var cellAddress = columnAddress + (1 + row);
+
+    formula = formula.split(name).join(cellAddress);
+  }
+
+  return formula;
+}

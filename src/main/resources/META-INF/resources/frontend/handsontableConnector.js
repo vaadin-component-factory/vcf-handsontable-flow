@@ -87,6 +87,15 @@ function createHandsontable(container, language, data) {
       cellProperties.renderer = "handsontableRenderer";
 
       return cellProperties;
+    },
+    afterGetColHeader: function(col, TH) {
+      if(!this.headerClassNames)
+        return;
+
+      if(this.headerClassNames[col])
+        if (!Handsontable.dom.hasClass(TH, this.headerClassNames[col])) {
+          Handsontable.dom.addClass(TH, this.headerClassNames[col]);
+        }
     }
   });
 
@@ -218,6 +227,11 @@ function createHandsontable(container, language, data) {
   hot.setNestedHeaders = function (nestedHeadersText) {
     var nestedHeadersArray = JSON.parse(nestedHeadersText);
     this.updateSettings({ nestedHeaders: nestedHeadersArray });
+  }
+
+  hot.setHeaderClassNames = function (classNamesStr) {
+    hot.headerClassNames = JSON.parse(classNamesStr);
+    this.updateSettings({});
   }
 }
 
