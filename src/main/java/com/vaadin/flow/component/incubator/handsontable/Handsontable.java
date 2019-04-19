@@ -304,4 +304,18 @@ public class Handsontable extends Div {
         Objects.requireNonNull(consumer, "stringConsumer with the given UUID was not found!");
         consumer.accept(data);
     }
+
+    /**
+     *
+     * @param classNames
+     */
+    public void setHeaderClassNames(String[] classNames) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String stringValue = mapper.writeValueAsString(classNames);
+            getElement().callFunction("$handsontable.setHeaderClassNames", stringValue);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

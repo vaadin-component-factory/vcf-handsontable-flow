@@ -2,3 +2,18 @@
     color: yellow;
     background-color: blue;
 }
+
+.handsontable th.left-header {
+    font-weight: bold;
+    text-align: left;
+}
+
+.handsontable th.center-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.handsontable th.right-header {
+    font-weight: bold;
+    text-align: right;
+}
