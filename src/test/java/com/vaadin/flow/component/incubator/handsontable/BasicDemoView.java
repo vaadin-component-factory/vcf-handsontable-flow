@@ -78,7 +78,7 @@ public class BasicDemoView extends AbstractDemoView {
         textArea = new TextArea("data");
         textArea.setValue(SAMPLE_JSON_DATA);
         textArea.setHeight("500px");
-        textArea.setWidthFull();
+        textArea.setWidth("100%");
 
         JsonArray data = createJsonObject();
         handsontable = new Handsontable(data);

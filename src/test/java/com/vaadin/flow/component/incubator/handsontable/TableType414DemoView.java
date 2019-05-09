@@ -51,7 +51,7 @@ public class TableType414DemoView extends AbstractDemoView {
         settings.setMinSpareRows(1);
         settings.setColWidths(new int[] {600, 100, 100});
         handsontable.setSettings(settings);
-        handsontable.setWidthFull();
+        handsontable.setWidth("100%");
 
         add(handsontable);
     }

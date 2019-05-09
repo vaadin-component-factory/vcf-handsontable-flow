@@ -88,11 +88,11 @@ function createHandsontable(container, language, data) {
 
       return cellProperties;
     },
-    afterGetColHeader: function(col, TH) {
-      if(!this.headerClassNames)
+    afterGetColHeader: function (col, TH) {
+      if (!this.headerClassNames)
         return;
 
-      if(this.headerClassNames[col])
+      if (this.headerClassNames[col])
         if (!Handsontable.dom.hasClass(TH, this.headerClassNames[col])) {
           Handsontable.dom.addClass(TH, this.headerClassNames[col]);
         }
@@ -120,6 +120,57 @@ function createHandsontable(container, language, data) {
       hot.updateSettings({});
     }, 0);
   };
+
+  hot.getSelection = function () {
+    var selected = this.getSelected();
+    var selection = [];
+
+    for (var index = 0; index < selected.length; index += 1) {
+      var item = selected[index];
+      var startRow = Math.min(item[0], item[2]);
+      var endRow = Math.max(item[0], item[2]);
+      var startCol = Math.min(item[1], item[3]);
+      var endCol = Math.max(item[1], item[3]);
+
+      selection[index] = { start: { row: startRow, col: startCol }, end: { row: endRow, col: endCol } };
+    }
+
+    return selection;
+  }
+
+  hot.getCurrentCell = function () {
+    var selected = this.getSelectedRange();
+    return selected[selected.length - 1].highlight;
+  }
+
+  hot.processShortKeys = function (event) {
+    try {
+      if (event.ctrlKey && event.key == 'b')
+        this.toggleCellBooleanMeta('bold', this.getSelection())
+      else if (event.ctrlKey && event.key == 'i')
+        this.toggleCellBooleanMeta('italic', this.getSelection())
+      else if (event.ctrlKey && event.key == 'u')
+        this.toggleCellBooleanMeta('underscore', this.getSelection())
+      else if (event.ctrlKey && event.key == '-')
+        this.toggleCellBooleanMeta('strikethrough', this.getSelection())
+      else if (event.ctrlKey && event.key == '[')
+        this.toggleCellBooleanMeta('border', this.getSelection())
+      else if (event.ctrlKey && event.key == 'r')
+        this.alter('insert_row', this.getCurrentCell().row + 1)
+      else if (event.ctrlKey && event.shiftKey && event.key == 'R')
+        this.alter('insert_row', this.getCurrentCell().row)
+      else if (event.ctrlKey && event.key == 'o')
+        this.alter('insert_col', this.getCurrentCell().col + 1)
+      else if (event.ctrlKey && event.shiftKey && event.key == 'O')
+        this.alter('insert_col', this.getCurrentCell().col)
+      else if (event.ctrlKey && event.key == '9')
+        this.alter('remove_row', this.getCurrentCell().row)
+      else if (event.ctrlKey && event.key == '0')
+        this.alter('remove_col', this.getCurrentCell().col)
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
 
   hot.updateContextMenu = function (language) {
     var hot = this;
@@ -163,7 +214,8 @@ function createHandsontable(container, language, data) {
             callback: hot.toggleCellBooleanMeta
           },
         }
-      }
+      },
+      beforeKeyDown: hot.processShortKeys
     });
   }
 

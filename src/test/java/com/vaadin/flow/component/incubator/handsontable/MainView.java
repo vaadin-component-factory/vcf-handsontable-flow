@@ -14,5 +14,6 @@ public class MainView extends VerticalLayout {
         add(new RouterLink("Table Type 414", TableType414DemoView.class));
         add(new RouterLink("Formatting", FormattingDemoView.class));
         add(new RouterLink("Formula", FormulaDemoView.class));
+        add(new RouterLink("Empty Table", EmptyTableView.class));
     }
 }
