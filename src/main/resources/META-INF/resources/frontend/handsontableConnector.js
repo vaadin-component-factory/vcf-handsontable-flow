@@ -145,27 +145,27 @@ function createHandsontable(container, language, data) {
 
   hot.processShortKeys = function (event) {
     try {
-      if (event.ctrlKey && event.key == 'b')
+      if (event.ctrlKey && event.key == 'b') // Bold
         this.toggleCellBooleanMeta('bold', this.getSelection())
-      else if (event.ctrlKey && event.key == 'i')
+      else if (event.ctrlKey && event.key == 'i') // Italic
         this.toggleCellBooleanMeta('italic', this.getSelection())
-      else if (event.ctrlKey && event.key == 'u')
+      else if (event.ctrlKey && event.key == 'u') // Underscore
         this.toggleCellBooleanMeta('underscore', this.getSelection())
-      else if (event.ctrlKey && event.key == '-')
+      else if (event.ctrlKey && event.key == '-') // Strike-through
         this.toggleCellBooleanMeta('strikethrough', this.getSelection())
-      else if (event.ctrlKey && event.key == '[')
+      else if (event.ctrlKey && event.key == '[') // Border
         this.toggleCellBooleanMeta('border', this.getSelection())
-      else if (event.ctrlKey && event.key == 'r')
+      else if (event.ctrlKey && event.key == 'r') // Insert row after
         this.alter('insert_row', this.getCurrentCell().row + 1)
-      else if (event.ctrlKey && event.shiftKey && event.key == 'R')
+      else if (event.ctrlKey && event.shiftKey && event.key == 'R') // Insert row before
         this.alter('insert_row', this.getCurrentCell().row)
-      else if (event.ctrlKey && event.key == 'o')
+      else if (event.ctrlKey && event.key == 'o') // Insert column after
         this.alter('insert_col', this.getCurrentCell().col + 1)
-      else if (event.ctrlKey && event.shiftKey && event.key == 'O')
+      else if (event.ctrlKey && event.shiftKey && event.key == 'O') // Insert column before
         this.alter('insert_col', this.getCurrentCell().col)
-      else if (event.ctrlKey && event.key == '9')
+      else if (event.ctrlKey && event.key == '9') // Remove row
         this.alter('remove_row', this.getCurrentCell().row)
-      else if (event.ctrlKey && event.key == '0')
+      else if (event.ctrlKey && event.key == '0') // Remove column
         this.alter('remove_col', this.getCurrentCell().col)
     } catch (err) {
       console.log(err.message);
