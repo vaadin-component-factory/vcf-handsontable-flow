@@ -37,10 +37,10 @@ public class FormulaDemoView extends AbstractDemoView {
     Settings settings = new Settings();
     settings.setColHeaders(COL_HEADERS);
     List<Column> columns = new ArrayList<>();
-    columns.add(getNumericColumn("0.0,00"));
-    columns.add(getNumericColumn("0.0,00"));
-    columns.add(getNumericColumn("0.0,00"));
-    columns.add(getNumericColumn("0.0,00"));
+    columns.add(getNumericColumn("$0,0.00"));
+    columns.add(getNumericColumn("$0,0.00"));
+    columns.add(getNumericColumn("$0,0.00"));
+    columns.add(getNumericColumn("$0,0.00"));
     settings.setColumns(columns);
     handsontable.setSettings(settings);
 
