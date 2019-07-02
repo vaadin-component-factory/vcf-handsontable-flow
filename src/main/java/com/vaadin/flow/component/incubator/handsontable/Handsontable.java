@@ -27,6 +27,7 @@ import com.vaadin.flow.component.html.Div;
 @JavaScript("frontend://handsontable/dist/handsontable.full.min.js")
 @StyleSheet("frontend://handsontable/dist/handsontable.full.min.css")
 @JavaScript("frontend://handsontable/dist/languages/all.min.js")
+@JavaScript("frontend://handsontable/dist/numbro/languages.min.js")
 @JavaScript("frontend://handsontableConnector.js")
 @StyleSheet("frontend://handsontable-extra.css")
 public class Handsontable extends Div {

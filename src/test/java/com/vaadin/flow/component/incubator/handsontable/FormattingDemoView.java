@@ -19,7 +19,9 @@ public class FormattingDemoView extends AbstractDemoView {
         List<Column> columns = new ArrayList<>();
         Column column = new Column();
         column.setType("numeric");
-        column.setNumericFormat(new NumericFormat("0,0.00"));
+        NumericFormat nf = new NumericFormat("$ 0,0.00");
+        nf.setCulture("de-DE");
+        column.setNumericFormat(nf);
         columns.add(column);
 
         column = new Column();
@@ -35,7 +37,7 @@ public class FormattingDemoView extends AbstractDemoView {
         settings.setColumns(columns);
 
         handsontable.setSettings(settings);
-        handsontable.setHeaderClassNames(new String[]{"left-header","center-header","right-header"});
+        handsontable.setHeaderClassNames(new String[] {"left-header", "center-header", "right-header"});
 
         add(handsontable);
     }
