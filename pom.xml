@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.vaadin</groupId>
-    <artifactId>incubator-handsontable-flow</artifactId>
-    <version>1.0.0</version>
-    <name>Incubator Handsontable Flow</name>
+    <artifactId>vcf-handsontable-flow</artifactId>
+    <version>2.0.0</version>
+    <name>Handsontable for Flow</name>
     <description>Integration of Hansontable for Vaadin platform</description>
 
     <properties>

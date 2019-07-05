@@ -1,22 +1,71 @@
-package com.vaadin.flow.component.incubator.handsontable;
+package com.vaadin.componentfactory.handsontable;
 
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * contains options for a column
+ * contains options for one cell that is specified by <code>row</code> and
+ * <code>col</code>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Column implements Serializable {
+public class Cell implements Serializable {
+    private int row;
+    private int col;
+
     private String type;
     private boolean readOnly;
     private String dateFormat;
     private NumericFormat numericFormat;
+    private boolean bold;
+    private boolean italic;
+    private boolean strikethrough;
+    private boolean underscore;
+    private boolean border;
     private boolean correctFormat = false;
     private Object editor;
     private Object source;
     private String className;
+
+    public Cell() {
+    }
+
+    public Cell(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    /**
+     * @see #setRow(int)
+     * @return
+     */
+    public int getRow() {
+        return row;
+    }
+
+    /**
+     * zero-based row index
+     * @param row
+     */
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    /**
+     * @see #setCol(int)
+     * @return
+     */
+    public int getCol() {
+        return col;
+    }
+
+    /**
+     * zero-based col index
+     * @param col
+     */
+    public void setCol(int col) {
+        this.col = col;
+    }
 
     /**
      * @see #setType(String)
@@ -51,7 +100,6 @@ public class Column implements Serializable {
     }
 
     /**
-     *
      * @param readOnly
      */
     public void setReadOnly(boolean readOnly) {
@@ -88,6 +136,89 @@ public class Column implements Serializable {
      */
     public void setNumericFormat(NumericFormat numericFormat) {
         this.numericFormat = numericFormat;
+    }
+
+    /**
+     * @see #setBold(boolean)
+     * @return
+     */
+    public boolean isBold() {
+        return bold;
+    }
+
+    /**
+     * @param bold if true, <code>fontWeight</code> of the cell is set to
+     *             <code>bold</code>.
+     */
+    public void setBold(boolean bold) {
+        this.bold = bold;
+    }
+
+    /**
+     * @see #setItalic(boolean)
+     * @return
+     */
+    public boolean isItalic() {
+        return italic;
+    }
+
+    /**
+     *
+     * @param italic if true, <code>fontStyle</code> of the cell is set to
+     *               <code>italic</code>.
+     */
+    public void setItalic(boolean italic) {
+        this.italic = italic;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isStrikethrough() {
+        return strikethrough;
+    }
+
+    /**
+     *
+     * @param strikethrough if true, <code>textDecoration</code> of the cell is
+     *                      set to <code>line-through</code>.
+     */
+    public void setStrikethrough(boolean strikethrough) {
+        this.strikethrough = strikethrough;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isUnderscore() {
+        return underscore;
+    }
+
+    /**
+     *
+     * @param underscore if true, <code>textDecoration</code> of the cell is
+     *                   set to <code>underline</code>.
+     */
+    public void setUnderscore(boolean underscore) {
+        this.underscore = underscore;
+    }
+
+    /**
+     * @see #setBorder(boolean)
+     * @return
+     */
+    public boolean isBorder() {
+        return border;
+    }
+
+    /**
+     * If set to true a 1 pixel solid black border is added to the cell.
+     * @param border
+     */
+    public void setBorder(boolean border) {
+        this.border = border;
     }
 
     /**
@@ -138,11 +269,16 @@ public class Column implements Serializable {
         this.editor = editor;
     }
 
+    /**
+     * @see #setSource(Object)
+     * @return
+     */
     public Object getSource() {
         return source;
     }
 
     /**
+     *
      * @param source Defines data source for Autocomplete or Dropdown cell
      *               types. It can be an array of String.
      */
@@ -159,13 +295,28 @@ public class Column implements Serializable {
     }
 
     /**
-     * sets the css class name(s) for this column. For example, to align the
-     * column content horizontally, htLeft, htCenter, htRight and htJustify
-     * class names can be used and, for vertical alignment, htTop, htMiddle and
-     * htBottom.
+     * sets the css class name(s) for this cell. For example, to align the cell
+     * content horizontally, htLeft, htCenter, htRight and htJustify class names
+     * can be used and, for vertical alignment, htTop, htMiddle, htBottom.
      * @param className
      */
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "row=" + row +
+                ", col=" + col +
+                ", type='" + type + '\'' +
+                ", readOnly=" + readOnly +
+                ", dateFormat='" + dateFormat + '\'' +
+                ", bold=" + bold +
+                ", italic=" + italic +
+                ", strikethrough=" + strikethrough +
+                ", underscore=" + underscore +
+                ", border=" + border +
+                '}';
     }
 }

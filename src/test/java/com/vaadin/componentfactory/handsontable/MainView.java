@@ -1,4 +1,4 @@
-package com.vaadin.flow.component.incubator.handsontable;
+package com.vaadin.componentfactory.handsontable;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;

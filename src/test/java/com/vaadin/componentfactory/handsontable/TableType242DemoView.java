@@ -1,7 +1,6 @@
-package com.vaadin.flow.component.incubator.handsontable;
+package com.vaadin.componentfactory.handsontable;
 
 import javax.json.JsonArray;
-
 import java.util.ArrayList;
 import java.util.List;
 
