@@ -1,5 +1,22 @@
 package com.vaadin.componentfactory.handsontable;
 
+/*
+ * #%L
+ * Handsontable for Flow
+ * %%
+ * Copyright (C) 2019 Vaadin
+ * %%
+ * This program is available under Commercial Vaadin Add-On License 3.0
+ * (CVALv3).
+ * 
+ * See the file license.html distributed with this software for more
+ * information about licensing.
+ * 
+ * You should have received a copy of the CVALv3 along with this program.
+ * If not, see <http://vaadin.com/license/cval-3>.
+ * #L%
+ */
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonReader;
