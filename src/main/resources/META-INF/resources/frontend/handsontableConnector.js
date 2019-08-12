@@ -81,12 +81,9 @@ function createHandsontable(container, language, data) {
     formulas: true,
     language: language,
     cells: function (row, col) {
-      var cellProperties = {};
-      var data = this.instance.getData();
-
-      cellProperties.renderer = "handsontableRenderer";
-
-      return cellProperties;
+      return {
+        renderer: "handsontableRenderer"
+      };
     },
     afterGetColHeader: function (col, TH) {
       if (!this.headerClassNames)
