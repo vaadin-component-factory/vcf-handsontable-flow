@@ -1,3 +1,5 @@
+import Handsontable from "./handsontable/dist/handsontable.full.min.js";
+
 function handsontableRenderer(instance, td, row, col, prop, value, cellProperties) {
   var renderer;
 
@@ -357,3 +359,4 @@ i18n.set('en-US')`Border`
   .for('de-DE')`Rand`;
 
 // ==============================
+window.createHandsontable = createHandsontable;
