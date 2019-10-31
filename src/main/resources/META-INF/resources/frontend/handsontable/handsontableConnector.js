@@ -1,4 +1,4 @@
-import Handsontable from "./handsontable/dist/handsontable.full.min.js";
+import Handsontable from "./dist/handsontable.full.min.js";
 
 function handsontableRenderer(instance, td, row, col, prop, value, cellProperties) {
   var renderer;

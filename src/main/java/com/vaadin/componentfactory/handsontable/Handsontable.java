@@ -41,12 +41,12 @@ import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 
-@JavaScript("frontend://handsontable/dist/handsontable.full.min.js")
-@StyleSheet("frontend://handsontable/dist/handsontable.full.min.css")
-@JavaScript("frontend://handsontable/dist/languages/all.min.js")
-@JavaScript("frontend://handsontable/dist/numbro/languages.min.js")
-@JavaScript("frontend://handsontableConnector.js")
-@StyleSheet("frontend://handsontable-extra.css")
+@JavaScript("./handsontable/dist/handsontable.full.min.js")
+@StyleSheet("./handsontable/dist/handsontable.full.min.css")
+@JavaScript("./handsontable/dist/languages/all.min.js")
+@JavaScript("./handsontable/dist/numbro/languages.min.js")
+@JavaScript("./handsontable/handsontableConnector.js")
+@StyleSheet("./handsontable-extra.css")
 public class Handsontable extends Div {
     private Map<UUID, Consumer<JsonArray>> jsonArrayConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<List<String[]>>> listOfStringArrayConsumers = new HashMap<>(1);
