@@ -37,16 +37,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 
 @JavaScript("./handsontable/dist/handsontable.full.min.js")
-@StyleSheet("./handsontable/dist/handsontable.full.min.css")
+@StyleSheet("context://handsontable.full.min.css")
 @JavaScript("./handsontable/dist/languages/all.min.js")
 @JavaScript("./handsontable/dist/numbro/languages.min.js")
 @JavaScript("./handsontable/handsontableConnector.js")
-@StyleSheet("./handsontable-extra.css")
+@StyleSheet("context://handsontable-extra.css")
 public class Handsontable extends Div {
     private Map<UUID, Consumer<JsonArray>> jsonArrayConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<List<String[]>>> listOfStringArrayConsumers = new HashMap<>(1);
