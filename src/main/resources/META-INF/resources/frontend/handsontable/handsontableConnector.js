@@ -1,42 +1,11 @@
 import Handsontable from "./dist/handsontable.full.min.js";
 
-function handsontableRenderer(instance, td, row, col, prop, value, cellProperties) {
-  var renderer;
+const DEFAULT_RENDERER = Handsontable.renderers.TextRenderer;
 
-  switch (cellProperties.type) {
-    case "autocomplete":
-      renderer = Handsontable.renderers.AutocompleteRenderer;
-      break;
-    case "base":
-      renderer = Handsontable.renderers.BaseRenderer;
-      break;
-    case "checkbox":
-      renderer = Handsontable.renderers.CheckboxRenderer;
-      break;
-    case "date":
-      renderer = Handsontable.renderers.DateRenderer;
-      break;
-    case "dropdown":
-      renderer = Handsontable.renderers.DropdownRenderer;
-      break;
-    case "html":
-      renderer = Handsontable.renderers.HtmlRenderer;
-      break;
-    case "numeric":
-      renderer = Handsontable.renderers.NumericRenderer;
-      break;
-    case "password":
-      renderer = Handsontable.renderers.PasswordRenderer;
-      break;
-    case "text":
-      renderer = Handsontable.renderers.TextRenderer;
-      break;
-    case "time":
-      renderer = Handsontable.renderers.TimeRenderer;
-      break;
-    default:
-      renderer = Handsontable.renderers.TextRenderer;
-  }
+function handsontableRenderer(instance, td, row, col, prop, value, cellProperties) {
+
+  let cellType = Handsontable.cellTypes.getCellType(cellProperties.type);
+  let renderer = (cellType && cellType.renderer) ? cellType.renderer : DEFAULT_RENDERER;
 
   renderer.apply(this, arguments);
 
@@ -47,7 +16,7 @@ function handsontableRenderer(instance, td, row, col, prop, value, cellPropertie
     td.style.fontStyle = 'italic';
   }
 
-  var textDecoration = '';
+  let textDecoration = '';
   if (cellProperties.strikethrough) {
     textDecoration = 'line-through ';
   }
@@ -360,3 +329,4 @@ i18n.set('en-US')`Border`
 
 // ==============================
 window.createHandsontable = createHandsontable;
+window.Handsontable = Handsontable;
