@@ -4,7 +4,8 @@ const DEFAULT_RENDERER = Handsontable.renderers.TextRenderer;
 
 function handsontableRenderer(instance, td, row, col, prop, value, cellProperties) {
 
-  let cellType = Handsontable.cellTypes.getCellType(cellProperties.type);
+  let cellType = Handsontable.cellTypes.hasOwnProperty(cellProperties.type) ?
+      Handsontable.cellTypes.getCellType(cellProperties.type) : null;
   let renderer = (cellType && cellType.renderer) ? cellType.renderer : DEFAULT_RENDERER;
 
   renderer.apply(this, arguments);

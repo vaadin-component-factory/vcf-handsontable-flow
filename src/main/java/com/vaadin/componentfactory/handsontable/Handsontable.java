@@ -35,12 +35,15 @@ import java.util.function.Consumer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.internal.UsageStatistics;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.pro.licensechecker.LicenseChecker;
 
 @JavaScript("./handsontable/dist/handsontable.full.min.js")
 @StyleSheet("context://handsontable.full.min.css")
@@ -49,6 +52,11 @@ import com.vaadin.flow.component.html.Div;
 @JavaScript("./handsontable/handsontableConnector.js")
 @StyleSheet("context://handsontable-extra.css")
 public class Handsontable extends Div {
+    private static final String PROJECT_NAME = "vcf-handsontable-flow";
+    private static final String PROJECT_VERSION = Handsontable.class.getPackage().getImplementationVersion();
+
+    private static boolean licenceVerified;
+
     private Map<UUID, Consumer<JsonArray>> jsonArrayConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<List<String[]>>> listOfStringArrayConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<List<Cell>>> cellListConsumers = new HashMap<>(1);
@@ -61,7 +69,7 @@ public class Handsontable extends Div {
     public Handsontable() {
         String language = UI.getCurrent().getLocale().toString().replaceAll("_", "-");
         String initFunction = "createHandsontable($0, $1);";
-        UI.getCurrent().getPage().executeJavaScript(initFunction, this, language);
+        UI.getCurrent().getPage().executeJs(initFunction, this, language);
     }
 
     /**
@@ -72,14 +80,19 @@ public class Handsontable extends Div {
     public Handsontable(JsonArray data) {
         String language = UI.getCurrent().getLocale().toString().replaceAll("_", "-");
         String initFunction = "createHandsontable($0, $1, $2);";
-        UI.getCurrent().getPage().executeJavaScript(initFunction, this, language, data.toString());
+        UI.getCurrent().getPage().executeJs(initFunction, this, language, data.toString());
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        verifyLicense(VaadinSession.getCurrent().getConfiguration().isProductionMode());
     }
 
     /**
      * @param data
      */
     public void setData(JsonArray data) {
-        getElement().callFunction("$handsontable.setData", data.toString());
+        getElement().callJsFunction("$handsontable.setData", data.toString());
     }
 
     /**
@@ -92,7 +105,7 @@ public class Handsontable extends Div {
     public void retrieveData(Consumer<JsonArray> callback) {
         UUID uuid = UUID.randomUUID();
         jsonArrayConsumers.put(uuid, callback);
-        getElement().callFunction("$handsontable.retrieveData", uuid.toString());
+        getElement().callJsFunction("$handsontable.retrieveData", uuid.toString());
     }
 
     /**
@@ -104,7 +117,7 @@ public class Handsontable extends Div {
     public void retrieveDataAsArray(Consumer<List<String[]>> callback) {
         UUID uuid = UUID.randomUUID();
         listOfStringArrayConsumers.put(uuid, callback);
-        getElement().callFunction("$handsontable.retrieveDataAsArray", uuid.toString());
+        getElement().callJsFunction("$handsontable.retrieveDataAsArray", uuid.toString());
     }
 
     /**
@@ -116,7 +129,7 @@ public class Handsontable extends Div {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String stringValue = mapper.writeValueAsString(cells);
-            getElement().callFunction("$handsontable.setCellsMeta", stringValue);
+            getElement().callJsFunction("$handsontable.setCellsMeta", stringValue);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -131,7 +144,7 @@ public class Handsontable extends Div {
     public void retrieveCellsMeta(Consumer<List<Cell>> callback) {
         UUID uuid = UUID.randomUUID();
         cellListConsumers.put(uuid, callback);
-        getElement().callFunction("$handsontable.retrieveCellsMeta", uuid.toString());
+        getElement().callJsFunction("$handsontable.retrieveCellsMeta", uuid.toString());
     }
 
     /**
@@ -145,7 +158,7 @@ public class Handsontable extends Div {
             mapper.writeValue(writer, settings);
             String stringValue = writer.toString();
             writer.close();
-            getElement().callFunction("$handsontable.setSettings", stringValue);
+            getElement().callJsFunction("$handsontable.setSettings", stringValue);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -158,7 +171,7 @@ public class Handsontable extends Div {
     public void retrieveSettings(Consumer<Settings> callback) {
         UUID uuid = UUID.randomUUID();
         settingsConsumers.put(uuid, callback);
-        getElement().callFunction("$handsontable.retrieveSettings", uuid.toString());
+        getElement().callJsFunction("$handsontable.retrieveSettings", uuid.toString());
     }
 
     @ClientCallable
@@ -251,7 +264,7 @@ public class Handsontable extends Div {
      * Nested headers document on Handsontable website</a>
      */
     public void setNestedHeaders(JsonArray nestedHeaders) {
-        getElement().callFunction("$handsontable.setNestedHeaders", nestedHeaders.toString());
+        getElement().callJsFunction("$handsontable.setNestedHeaders", nestedHeaders.toString());
     }
 
     /**
@@ -261,7 +274,7 @@ public class Handsontable extends Div {
      * @param amount the number of columns
      */
     public void insertCol(int index, int amount) {
-        getElement().callFunction("$handsontable.alter", "insert_col", index, amount);
+        getElement().callJsFunction("$handsontable.alter", "insert_col", index, amount);
     }
 
     /**
@@ -271,7 +284,7 @@ public class Handsontable extends Div {
      * @param amount the number of rows
      */
     public void insertRow(int index, int amount) {
-        getElement().callFunction("$handsontable.alter", "insert_row", index, amount);
+        getElement().callJsFunction("$handsontable.alter", "insert_row", index, amount);
     }
 
     /**
@@ -281,7 +294,7 @@ public class Handsontable extends Div {
      * @param amount the number of columns to be removed
      */
     public void removeCol(int index, int amount) {
-        getElement().callFunction("$handsontable.alter", "remove_col", index, amount);
+        getElement().callJsFunction("$handsontable.alter", "remove_col", index, amount);
     }
 
     /**
@@ -291,7 +304,7 @@ public class Handsontable extends Div {
      * @param amount the number of rows to be removed
      */
     public void removeRow(int index, int amount) {
-        getElement().callFunction("$handsontable.alter", "remove_row", index, amount);
+        getElement().callJsFunction("$handsontable.alter", "remove_row", index, amount);
     }
 
     /**
@@ -301,7 +314,7 @@ public class Handsontable extends Div {
      * @param value
      */
     public void setDataAtCell(int row, int col, String value) {
-        getElement().callFunction("$handsontable.setDataAtCell", row, col, value);
+        getElement().callJsFunction("$handsontable.setDataAtCell", row, col, value);
     }
 
     /**
@@ -313,7 +326,7 @@ public class Handsontable extends Div {
     public void retrieveDataAtCell(int row, int col, Consumer<String> callback) {
         UUID uuid = UUID.randomUUID();
         stringConsumers.put(uuid, callback);
-        getElement().callFunction("$handsontable.retrieveDataAtCell", row, col, uuid.toString());
+        getElement().callJsFunction("$handsontable.retrieveDataAtCell", row, col, uuid.toString());
     }
 
     @ClientCallable
@@ -332,9 +345,17 @@ public class Handsontable extends Div {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String stringValue = mapper.writeValueAsString(classNames);
-            getElement().callFunction("$handsontable.setHeaderClassNames", stringValue);
+            getElement().callJsFunction("$handsontable.setHeaderClassNames", stringValue);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void verifyLicense(boolean productionMode) {
+        if (!productionMode && !licenceVerified) {
+            LicenseChecker.checkLicense(PROJECT_NAME, PROJECT_VERSION);
+            UsageStatistics.markAsUsed(PROJECT_NAME, PROJECT_VERSION);
+            licenceVerified = true;
         }
     }
 }
