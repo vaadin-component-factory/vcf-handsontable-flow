@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin</groupId>
     <artifactId>vcf-handsontable-flow</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <name>Handsontable for Flow</name>
     <description>Integration of Hansontable for Vaadin platform</description>
 
