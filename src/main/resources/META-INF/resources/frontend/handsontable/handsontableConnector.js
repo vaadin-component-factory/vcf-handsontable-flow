@@ -70,6 +70,24 @@ function createHandsontable(container, language, data) {
 
   container.$handsontable = hot;
 
+  hot.setCopyEnabled = function (copyPastable) {
+    hot.updateSettings({copyPaste: copyPastable})
+  };
+
+  hot.setCopyColumnsLimit = function (columnsLimit) {
+    hot.updateSettings({
+      copyPaste: {
+        columnsLimit: columnsLimit,
+    }})
+  };
+
+  hot.setCopyRowsLimit = function (rowsLimit) {
+    hot.updateSettings({
+      copyPaste: {
+        rowsLimit: rowsLimit,
+    }})
+  };
+
   hot.toggleCellBooleanMeta = function (key, selection, clickEvent) {
     var hot = this;
     setTimeout(function () {

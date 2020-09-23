@@ -62,6 +62,10 @@ public class Handsontable extends Div {
     private Map<UUID, Consumer<List<Cell>>> cellListConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<Settings>> settingsConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<String>> stringConsumers = new HashMap<>(1);
+    
+    private boolean copyable;
+    private int columnsLimit;
+    private int rowsLimit;
 
     /**
      * creates an empty Handsontable
@@ -305,6 +309,78 @@ public class Handsontable extends Div {
      */
     public void removeRow(int index, int amount) {
         getElement().callJsFunction("$handsontable.alter", "remove_row", index, amount);
+    }
+    
+    /**
+     * Returns whether the table's content can be copied.
+     *
+     */
+    public boolean isCopyEnabled() {
+        return copyable;
+    }
+    
+    /**
+     * Sets whether the table's content can be copied
+     *
+     * @param copyable
+     */
+    public void setCopyEnabled(boolean copyable) {
+        this.copyable = copyable;
+        getElement().callJsFunction("$handsontable.setCopyEnabled", copyable);
+    }
+
+    /**
+     * Returns the maximum numbers of columns that can be copied.
+     *
+     */
+    public int getCopyColumnsLimit() {
+        return columnsLimit;
+    }
+
+    /**
+     * Sets the maximum numbers of columns that can be copied.
+     *
+     * Note, will re-enable copy even if it was disabled using
+     * {@link Handsontable#setCopyEnabled(false)}.
+     *
+     * @param columnsLimit
+     */
+    public void setCopyColumnsLimit(int columnsLimit) {
+        if (columnsLimit < 1) {
+            throw new IllegalArgumentException(
+                    "Input must be a positive integer");
+        }
+        copyable = true;
+        this.columnsLimit = columnsLimit;
+        getElement().callJsFunction("$handsontable.setCopyColumnsLimit",
+                columnsLimit);
+    }
+       
+    /**
+     * Returns the maximum numbers of rows that can be copied.
+     *
+     */
+    public int getCopyRowsLimit() {
+        return rowsLimit;
+    }
+
+    /**
+     * Sets the maximum numbers of rows that can be copied.
+     *
+     * Note, will re-enable copy even if it was disabled using
+     * {@link Handsontable#setCopyEnabled(false)}.
+     *
+     * @param rowsLimit
+     */
+    public void setCopyRowsLimit(int rowsLimit) {
+        if (rowsLimit < 1) {
+            throw new IllegalArgumentException(
+                    "Input must be a positive integer");
+        }
+        copyable = true;
+        this.rowsLimit = rowsLimit;
+        getElement().callJsFunction("$handsontable.setCopyRowsLimit",
+                rowsLimit);
     }
 
     /**
