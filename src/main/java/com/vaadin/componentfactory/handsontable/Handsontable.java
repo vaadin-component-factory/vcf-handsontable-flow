@@ -74,6 +74,10 @@ public class Handsontable extends Div {
         String language = UI.getCurrent().getLocale().toString().replaceAll("_", "-");
         String initFunction = "createHandsontable($0, $1);";
         UI.getCurrent().getPage().executeJs(initFunction, this, language);
+        
+        copyable = true;
+        columnsLimit = 1000;
+        rowsLimit = 1000;
     }
 
     /**
