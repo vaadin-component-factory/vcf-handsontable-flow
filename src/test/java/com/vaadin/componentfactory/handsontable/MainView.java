@@ -17,5 +17,6 @@ public class MainView extends VerticalLayout {
         add(new RouterLink("Empty Table", EmptyTableView.class));
         add(new RouterLink("Big Table", BigTableDemoView.class));
         add(new RouterLink("Custom Type", CustomTypeView.class));
+        add(new RouterLink("Copy rows limit", CopyRowsLimitView.class));
     }
 }

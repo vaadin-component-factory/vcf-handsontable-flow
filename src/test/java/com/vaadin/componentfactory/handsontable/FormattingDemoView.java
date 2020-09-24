@@ -20,7 +20,7 @@ public class FormattingDemoView extends AbstractDemoView {
         Column column = new Column();
         column.setType("numeric");
         NumericFormat nf = new NumericFormat("$ 0,0.00");
-        nf.setCulture("de-DE");
+        nf.setCulture("fi-FI");
         column.setNumericFormat(nf);
         columns.add(column);
 

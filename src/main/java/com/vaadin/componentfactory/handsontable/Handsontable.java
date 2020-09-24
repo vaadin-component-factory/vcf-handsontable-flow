@@ -63,9 +63,9 @@ public class Handsontable extends Div {
     private Map<UUID, Consumer<Settings>> settingsConsumers = new HashMap<>(1);
     private Map<UUID, Consumer<String>> stringConsumers = new HashMap<>(1);
     
-    private boolean copyable;
-    private int columnsLimit;
-    private int rowsLimit;
+    private boolean copyable = true;
+    private int columnsLimit = 1000;
+    private int rowsLimit = 1000;
 
     /**
      * creates an empty Handsontable
