@@ -6,16 +6,30 @@ package com.vaadin.componentfactory.handsontable;
  * %%
  * Copyright (C) 2019 Vaadin
  * %%
- * This program is available under Commercial Vaadin Add-On License 3.0
- * (CVALv3).
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
- * See the file license.html distributed with this software for more
- * information about licensing.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  * 
- * You should have received a copy of the CVALv3 along with this program.
- * If not, see <http://vaadin.com/license/cval-3>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  * #L%
  */
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.ClientCallable;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dependency.JavaScript;
+import com.vaadin.flow.component.dependency.StyleSheet;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.server.VaadinSession;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -31,19 +45,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.ClientCallable;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.dependency.StyleSheet;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.internal.UsageStatistics;
-import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.pro.licensechecker.LicenseChecker;
 
 @JavaScript("./handsontable/dist/handsontable.full.min.js")
 @StyleSheet("context://handsontable.full.min.css")
@@ -85,11 +86,6 @@ public class Handsontable extends Div {
         String language = UI.getCurrent().getLocale().toString().replaceAll("_", "-");
         String initFunction = "createHandsontable($0, $1, $2);";
         UI.getCurrent().getPage().executeJs(initFunction, this, language, data.toString());
-    }
-
-    @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        verifyLicense(VaadinSession.getCurrent().getConfiguration().isProductionMode());
     }
 
     /**
@@ -427,11 +423,4 @@ public class Handsontable extends Div {
         }
     }
 
-    private void verifyLicense(boolean productionMode) {
-        if (!productionMode && !licenceVerified) {
-            LicenseChecker.checkLicense(PROJECT_NAME, PROJECT_VERSION);
-            UsageStatistics.markAsUsed(PROJECT_NAME, PROJECT_VERSION);
-            licenceVerified = true;
-        }
-    }
 }
